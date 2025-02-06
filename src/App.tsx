@@ -2,9 +2,10 @@
 // import { Input } from "./components/ui/input";
 import { Textarea } from "./components/ui/textarea";
 import { Button, buttonVariants } from "./components/ui/button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {Note} from "./types/Note"
 import { Card, CardFooter, CardHeader, CardTitle } from "./components/ui/card";
+
 
 export default function App() {
   const [note, setNote]=useState<Note>({content:""})
@@ -35,6 +36,19 @@ export default function App() {
     }
 
   }
+  // Save notes in localStorage
+  useEffect(()=>{
+    if(notesList.length>0){
+      localStorage.setItem("notes",JSON.stringify(notesList))
+    }
+  },[notesList])
+  // Load notes from the local storage
+  useEffect(()=>{
+    const savedNotes=localStorage.getItem("notes")
+    if(savedNotes){
+      setNotesList(JSON.parse(savedNotes))
+    }
+  },[])
   return (
     <div className="">
       <div className="container mx-auto m-8">
